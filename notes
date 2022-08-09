@@ -1,11 +1,18 @@
 Machine speed for these tests was 120mm/min
 
 Test    Conditions
-6143    SO 12mm, 25scfh, 0.8f/o
+1430    SO 12mm, 25scfh, 0.8f/o
 2958    SO 15mm, 25scfh, 0.8f/o
-6361    SO 5mm, 25scfh, 0.8f/o
-6435    SO 5mm, 30scfh, 0.8f/o
-6524    SO 5mm, 30scfh, 0.55f/o
-6591    SO 12mm, 30scfh, 0.55f/o
-7041    SO 12mm, 30scfh, 0.70f/o
-7123    SO 5mm, 30scfh, 0.70f/o
+3611    SO 5mm, 25scfh, 0.8f/o
+4352    SO 5mm, 30scfh, 0.8f/o
+5240    SO 5mm, 30scfh, 0.55f/o
+5916    SO 12mm, 30scfh, 0.55f/o
+0413    SO 12mm, 30scfh, 0.70f/o
+1231    SO 5mm, 30scfh, 0.70f/o
+4327    SO 5mm, 25scfh, 0.7f/o
+4838    SO 5mm, 20scfh, 0.7f/o
+5422    SO 5mm, 20scfh, 0.8f/o
+0424    SO 12mm, 20scfh, 0.8f/o
+0903    SO 12mm, 20scfh, 0.7f/o
+1326    SO 12mm, 25scfh, 0.7f/o
+
