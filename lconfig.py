@@ -298,7 +298,7 @@ produce a detailed printout of the parameters.
             'triglevel':0.,
             'trigpre':0,
             'trigedge':LEnum(['rising', 'falling', 'all'], state=0),
-            'effrequency':0,
+            'effrequency':0.,
             'aich':[],
             'aoch':[],
             'efch':[],
@@ -524,7 +524,7 @@ They are:
     def __init__(self):
         self.__dict__.update({
             'efchannel':-1,
-            'efsignal':LEnum(['pwm', 'count', 'pulse', 'frequency', 'phase', 'quadrature'], [0,1,1,2,3,4]),
+            'efsignal':LEnum(['pwm', 'counter', 'pulse', 'frequency', 'phase', 'quadrature'], [0,1,1,2,3,4]),
             'efedge':LEnum(['rising', 'falling', 'all']),
             'efdebounce':LEnum(['none', 'fixed', 'reset', 'minimum']),
             'efdirection':LEnum(['input', 'output']),
@@ -760,12 +760,14 @@ If distream was not set, then this `dibits()` returns with an error.
         if not self.config.distream:
             raise Exception('DBITS: The digital input stream was not configured for this data set.')
         
+        ndata = self.data.shape[0]
+        
         # If the conversion hasn't already been performed, do it    
         if self._dbits is None:
             self._dbits = np.zeros((ndata,16), dtype=bool)
             for ii in range(ndata):
                 for jj in range(16):
-                    self._dbits[ii, jj] = bool(int(self.data[ii, nch-1]) & 1<<jj)
+                    self._dbits[ii, jj] = bool(int(self.data[ii, -1]) & 1<<jj)
         
         if dich is None:
             return self._dbits
@@ -841,7 +843,7 @@ whichever is configured last will be returned.
                     raise Exception('GET_INDEX: Index, %d, is out of range with %d channels.'%(target, nch)) 
         
         if ai is None:
-            raise Exception('GET_INDEX: Unhandled exception!')
+            raise Exception('GET_CHANNEL: Unhandled exception!')
             
         return ai
 
@@ -876,11 +878,11 @@ Returns the analog input configuration instance for the input channel
 See the get_index() for a detailed description of the arguments
 """
         ai = self.get_index(target=target,ainum=ainum)
-        if ai==len(self.config.aich):
+        if ai==len(self.aich):
             raise Exception('GET_CONFIG: The DISTREAM configuration is not supported by get_config()')
-        return self.config.aich[ai]
+        return self.aich[ai]
     
-    
+            
     def time(self):
         """time()       Return a 1D time array
         
@@ -1220,16 +1222,22 @@ filter; all transitions will be reported.
         i0 = 0
         i1 = -1
         if tstart:
-            i0 = int(round(self.config.samplehz*tstart))
+            i0 = int(round(tstart * self.config.samplehz))
         if tstop:
-            i1 = int(round(self.config.samplehz*tstop))
+            i1 = int(round(tstop * self.config.samplehz))
+            
+        indices = []
         
         # Get the channel data
-        y = self[i0:i1,dich]
-        # Correct for the offset imposed by the downselect
+        y = self.dbits()[i0:i1,dich]
+        
+        indices = self.event_filter(y, debounce=debounce, edge=edge, count=count)
+        
+        # Adjust the indices for the offsets created by downselection
+        # and differentiation
         if i0:
             indices += i0
-            
+        
         return indices
         
 
