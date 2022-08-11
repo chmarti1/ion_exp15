@@ -15,4 +15,7 @@ Test    Conditions
 0424    SO 12mm, 20scfh, 0.8f/o
 0903    SO 12mm, 20scfh, 0.7f/o
 1326    SO 12mm, 25scfh, 0.7f/o
-
+3544    SO 12mm, 20scfh, 0.55f/o
+4038    SO 12mm, 25scfh, 0.55f/o
+4652    SO 5mm, 25scfh, 0.55f/o
+5326    SO 5mm, 20scfh, 0.55f/o
